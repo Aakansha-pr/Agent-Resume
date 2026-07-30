@@ -26,9 +26,9 @@ st.image("bg.png")
 st.sidebar.title("Fill Important details")
 st.sidebar.image("bg.png")
 #==================API KEYS=================
-TAVILY_API = st.sidebar.text_input("Tavily-API", type = 'password')
+TAVILY_API_KEY = st.sidebar.text_input("Tavily-API", type = 'password')
 GOOGLE_API_KEY = st.sidebar.text_input("Gemini-API", type = 'password')
-GROQ_API = st.sidebar.text_input("Groq-API", type = 'password')
+GROQ_API_KEY = st.sidebar.text_input("Groq-API", type = 'password')
 
 all_API = [TAVILY_API_KEY,GROQ_API_KEY,GOOGLE_API_KEY]
 if not all(all_API):
