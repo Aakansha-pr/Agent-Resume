@@ -144,7 +144,7 @@ def get_jobs(agent, Location = 'Noida,delhi',
 #code = get_jobs(agent)
 #DISPLAY.HTML(code)
 
-if st.button("Generate Resume):
+if st.button("Generate Resume"):
              with st.spinner("Agent Running"):
                  code = main_agent(agent,user_info)
                  st.html(code, width = "stretch",
