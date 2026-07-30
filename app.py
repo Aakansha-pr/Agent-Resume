@@ -22,6 +22,9 @@ st.write("""Thia app helps user to build customized Professional
 Resume with Latest job apply links""")
 
 st.image("bg.png")
+
+st.sidebar.title("Fill Important details")
+st.sidebar.image("bg.png")
 #==================API KEYS=================
 TAVILY_API = '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'
 GOOGLE_API_KEY = 'AQ.Ab8RN6LTFftyUxMGH9h_dW6gR3ciOS9egSLkvgWgKu9dxWCYnw'
