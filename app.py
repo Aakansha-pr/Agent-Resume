@@ -1,0 +1,111 @@
+#================LOAD MODULES=================
+from langchain_google_genai import ChatGoogleGenerativeAI
+from langchain_groq import ChatGroq
+import langchain
+from langchain.agents import create_agent
+import langchain_community
+from tavily import TavilyClient
+import pytesseract as pyt
+import streamlit as st
+import os
+import time
+from PIL import Image
+import pandas as pd
+import numpy as np
+
+#==================API KEYS=================
+TAVILY_API = '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'
+GOOGLE_API_KEY = 'AQ.Ab8RN6LTFftyUxMGH9h_dW6gR3ciOS9egSLkvgWgKu9dxWCYnw'
+GROQ_API = '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'
+
+#=================MODEL=====================
+model = ChatGoogleGenerativeAI(
+    model = 'gemini-3.5-flash-lite',
+    google_api_key = GOOGLE_API_KEY
+)
+response = model.invoke("hello buddy!")
+response.content[-1]['text']
+
+#================TOOLS====================
+def search_latest_news_jobs(query):
+  """This function helps to fetch latest news or jobs rerlated article
+  using tavily """
+
+  client = TavilyClient(
+      api_key = TAVILY_API )
+  response = client.search(query)
+  return response
+
+#================AGENT CREATION=============
+agent = create_agent(
+    model = model,
+    tools = [search_latest_news_jobs]
+)
+agent
+
+#===============AGENT======================
+def main_agent(agent,query):
+  """This is the main agent or leader agent
+  orchestrate sub agents"""
+
+  # giving prompt to create detailed prompt for code generation
+  prompt = """You are AI assistant and below given is a
+  prompt, your task is to give detailed prompt for this.
+  You are a professional Resume Generator where user will
+  give their personal info, you have to create detailed
+  resume for studentsand professional one, it must be
+  with dynamic UI and UX and, with advanced CSS Professional
+  Designing in black and pink color. Make sure to give output in HTML format only
+  no markdowns allowed
+   """
+
+  response = agent.invoke({'messages': [{'role':'user','content':prompt}]})
+  detailed_prompt = response['messages'][-1].content[-1]['text']
+
+  # save prompt using file handling
+
+  with open('prompt.txt','w') as f:
+    f.write(detailed_prompt)
+
+  user_details = f"""Below given is a user details generate\
+  resume based on that, if not given keep: Python Developer
+  user details: {query}
+  """
+
+  final_prompt = prompt + detailed_prompt + user_details
+
+  # code generation
+  response = agent.invoke({'messages': [{'role':'user','content':final_prompt}]})
+
+  code = response['messages'][-1].content[-1]['text']
+  return code
+
+#==================Execution==============
+code = main_agent(agent,'AAKANSHA, DATA ANALYST')
+from IPython import display as DISPLAY
+DISPLAY.HTML(code)
+
+#============PROMPT=====================
+# fetch latest domain related jobs using tavily
+def get_jobs(agent, Location = 'Noida,delhi',
+             Profile = 'Data analyst, AI engineer'):
+  Location = 'Noida, Delhi'
+  Profile = 'Data analyst, AI engineer'
+
+
+  prompt = f"""based on your given job profile,
+  fetch latest jobs or job apply article using linkdln, naukri,indeed, or
+  all popular job apply platforms, show results with JOB PROFILE
+  NAME,LOCATION,SALARY,COMPANY NAME, SHOW jobs only
+  related given {Location} and {Profile} everything in black and pink.
+  outputmust be in professional HTML,naukri themes cards with
+  dynamic design, show atleast Top 10 - 20 results with direct apply link"""
+
+  response = agent.invoke({'messages': [{'role':'user','content':prompt}]})
+
+  code = response['messages'][-1].content[-1]['text']
+  return code
+
+#==============EXECUTE===============
+code = get_jobs(agent)
+DISPLAY.HTML(code)
