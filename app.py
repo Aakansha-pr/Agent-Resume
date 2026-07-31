@@ -21,10 +21,10 @@ st.title("AI RESUME GENERATOR")
 st.write("""Thia app helps user to build customized Professional
 Resume with Latest job apply links""")
 
-st.image("bg.jpg")
+st.image("assets/bg.jpg")
 
 st.sidebar.title("Fill Important details")
-st.sidebar.image("bg.jpg")
+st.sidebar.image("assets/bg.jpg")
 #==================API KEYS=================
 TAVILY_API_KEY = st.sidebar.text_input("Tavily-API", type = 'password')
 GOOGLE_API_KEY = st.sidebar.text_input("Gemini-API", type = 'password')
