@@ -21,10 +21,10 @@ st.title("AI RESUME GENERATOR")
 st.write("""Thia app helps user to build customized Professional
 Resume with Latest job apply links""")
 
-st.image("bg.png")
+st.image("https://agent-resume-kjes5sfhbz5afy4tkbrhwb.streamlit.app/~/+/media/f7b137b2648d4f736ec6f316f15cca54.jpg")
 
 st.sidebar.title("Fill Important details")
-st.sidebar.image("bg.png")
+st.sidebar.image("https://agent-resume-kjes5sfhbz5afy4tkbrhwb.streamlit.app/~/+/media/f7b137b2648d4f736ec6f316f15cca54.jpg")
 #==================API KEYS=================
 TAVILY_API_KEY = st.sidebar.text_input("Tavily-API", type = 'password')
 GOOGLE_API_KEY = st.sidebar.text_input("Gemini-API", type = 'password')
@@ -36,6 +36,11 @@ if not all(all_API):
     st.stop()
 elif all(all_API):
     st.success('API KEYS LOADED SUCCESSFULLY')
+#=================MODEL=====================
+    model = ChatGoogleGenerativeAI(
+        model = 'gemini-3.5-flash-lite',
+        google_api_key = GOOGLE_API_KEY
+    )
 else:
     st.info("PASS ALL API-KEYS")
 
@@ -53,10 +58,6 @@ profile = st.sidebar.multiselect("Select Job Profile",
 st.markdown("""### GET USER INFO""")
 user_info = st.text_area("""Write your Resume Description:""")
 #=================MODEL=====================
-model = ChatGoogleGenerativeAI(
-    model = 'gemini-3.5-flash-lite',
-    google_api_key = GOOGLE_API_KEY
-)
 #response = model.invoke("hello buddy!")
 #response.content[-1]['text']
 
