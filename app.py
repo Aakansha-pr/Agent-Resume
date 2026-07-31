@@ -71,7 +71,7 @@ def search_latest_news_jobs(query):
   using tavily """
 
   client = TavilyClient(
-      api_key = TAVILY_API )
+      api_key = TAVILY_API_KEY )
   response = client.search(query)
   return response
 
